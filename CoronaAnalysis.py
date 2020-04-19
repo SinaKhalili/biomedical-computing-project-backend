@@ -118,9 +118,9 @@ def to_integer(dt_time):
     year = dt_time.year
     month = dt_time.month
     day = dt_time.day
-    if month == 4:
-        month = month-1
-        day = day+31
+    # if month == 4:
+    #     month = month-1
+    #     day = day+31
         
     return 10000*year + 100*month + day    
     
@@ -164,12 +164,12 @@ for i in provinceTestingData:
             timeTestingDataY[provinceTesting.index(j[1])].append(float(j[2]))
         
 # calculate polynomial
-z = np.polyfit(timeCaseDataX[1], timeCaseDataY[1], 4)
+z = np.polyfit(timeCaseDataX[1], timeCaseDataY[1], 6)
 f = np.poly1d(z)
 
 # print(timeTestingDataX[1])
 # print(timeTestingDataY[1])
-z1 = np.polyfit(timeTestingDataX[1], timeTestingDataY[1], 4)
+z1 = np.polyfit(timeTestingDataX[1], timeTestingDataY[1], 6)
 f1 = np.poly1d(z1)
 # # calculate new x's and y's
 # x_new = np.linspace(timeCaseDataX[0][0], timeCaseDataX[0][-1], 50)
@@ -179,15 +179,24 @@ f1 = np.poly1d(z1)
 # # plt.xlim([timeCaseDataX[0][0]-1, timeCaseDataX[0][-1] + 1 ])
 # plt.show()
 
+date = 20200419
+# date = 20200350
 print(provinceCase[1])
 print('date', timeCaseDataX[1][-1])
 print('infected', timeCaseDataY[1][-1])
-print("expected infected", f(20200350))
+print("expected infected", f(date))
 print()
 
 print(provinceTesting[1])
 print('date', timeTestingDataX[1][0])
 print('tested', timeTestingDataY[1][0])
-print("expected tested", f1(20200350))
+print("expected tested", f1(date))
 
-# change dateswap back to original time?? hack method did not fix curve fitting of tested prediction
+
+testingdiff = (f1(date)-timeTestingDataY[1][0])/timeTestingDataY[1][0]*100
+casediff = (f(date)-timeCaseDataY[1][-1])/timeCaseDataY[1][-1]*100
+print(testingdiff,casediff)
+print(f(date)/f1(date)*100)
+print(timeCaseDataY[1][-1]/timeTestingDataY[1][0]*100)
+
+# dateSwap hack vs nonhack both have less than 5% deviance in accuracy at latest day
