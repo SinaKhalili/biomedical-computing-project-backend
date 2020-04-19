@@ -1,9 +1,17 @@
 from fastapi import FastAPI, Response
-import requests
+from fastapi.middleware.cors import CORSMiddleware 
 import os
 import random
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # Just keep this until it's bad
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def auth_user(response: Response, code: str = None):
