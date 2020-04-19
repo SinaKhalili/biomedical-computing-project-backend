@@ -115,7 +115,14 @@ def swapDate(date):
 # takes dateTime format and return int version
 # not that accurate?
 def to_integer(dt_time):
-    return 10000*dt_time.year + 100*dt_time.month + dt_time.day    
+    year = dt_time.year
+    month = dt_time.month
+    day = dt_time.day
+    if month == 4:
+        month = month-1
+        day = day+31
+        
+    return 10000*year + 100*month + day    
     
 for i in provinceCaseData:
     for j in i:
@@ -175,7 +182,7 @@ f1 = np.poly1d(z1)
 print(provinceCase[1])
 print('date', timeCaseDataX[1][-1])
 print('infected', timeCaseDataY[1][-1])
-print("expected infected", f(20200419))
+print("expected infected", f(20200350))
 print()
 
 print(provinceTesting[1])
@@ -184,4 +191,4 @@ print('tested', timeTestingDataY[1][-1])
 print("expected tested", f1(20200317))
 # print(provinceCase)
 
-# 
+# change dateswap back to original time?? hack method did not fix curve fitting of tested prediction
