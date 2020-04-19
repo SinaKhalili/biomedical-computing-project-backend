@@ -76,5 +76,7 @@ for i in range(4,numRow):
     provinceData[province.index(rowData[i][5])].append(rowData[i])
     dateReportedData[dateReported.index(rowData[i][7])].append(rowData[i])
 
-for j in healthRegionData[0]:
-    print(j[4])
+# test for checking data
+for i in healthRegionData:
+    for j in i:
+        print(j[4])
