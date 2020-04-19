@@ -179,7 +179,7 @@ f1 = np.poly1d(z1)
 # # plt.xlim([timeCaseDataX[0][0]-1, timeCaseDataX[0][-1] + 1 ])
 # plt.show()
 
-date = 20200419
+date = 20201030
 # date = 20200350
 print(provinceCase[1])
 print('date', timeCaseDataX[1][-1])
@@ -200,3 +200,4 @@ print(f(date)/f1(date)*100)
 print(timeCaseDataY[1][-1]/timeTestingDataY[1][0]*100)
 
 # dateSwap hack vs nonhack both have less than 5% deviance in accuracy at latest day
+# implement that if prediction is negative, return 0
