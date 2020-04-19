@@ -164,12 +164,12 @@ for i in provinceTestingData:
             timeTestingDataY[provinceTesting.index(j[1])].append(float(j[2]))
         
 # calculate polynomial
-z = np.polyfit(timeCaseDataX[1], timeCaseDataY[1], 3)
+z = np.polyfit(timeCaseDataX[1], timeCaseDataY[1], 4)
 f = np.poly1d(z)
 
 # print(timeTestingDataX[1])
 # print(timeTestingDataY[1])
-z1 = np.polyfit(timeTestingDataX[1], timeTestingDataY[1], 3)
+z1 = np.polyfit(timeTestingDataX[1], timeTestingDataY[1], 4)
 f1 = np.poly1d(z1)
 # # calculate new x's and y's
 # x_new = np.linspace(timeCaseDataX[0][0], timeCaseDataX[0][-1], 50)
@@ -186,9 +186,8 @@ print("expected infected", f(20200350))
 print()
 
 print(provinceTesting[1])
-print('date', timeTestingDataX[1][-1])
-print('tested', timeTestingDataY[1][-1])
-print("expected tested", f1(20200317))
-# print(provinceCase)
+print('date', timeTestingDataX[1][0])
+print('tested', timeTestingDataY[1][0])
+print("expected tested", f1(20200350))
 
 # change dateswap back to original time?? hack method did not fix curve fitting of tested prediction
