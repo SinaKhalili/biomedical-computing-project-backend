@@ -7,6 +7,11 @@
 # print(data[['ageCase']])
 
 from xlrd import *
+import numpy as np
+import copy
+import datetime
+import matplotlib.pyplot as plt
+
 file = open_workbook('D:\CJ\Academic\CMPT340\Project\Public_COVID-19_Canada.xlsx')
 # print(data)
 data = []
@@ -89,3 +94,94 @@ for i in range(4,numRowTesting):
 
 # have projected data kept in variable to be called by API
 # project rate of infection vs Test to future rate
+
+# # takes dates in day-month-year
+# def compareDates(date11, date22):
+#     date1 = date11.split('-')
+#     date2 = date22.split('-')
+#     dateDifference = date2[0] - date1[0]
+#     monthDifference = date2[1] - date1[1]
+#     yearDifference = date2[2] - date1[2]
+#     totalDifference = yearDifference*365+monthDifference*30+dateDifference
+#     print(totalDifference, date11, date22)
+#     return totalDifference
+
+# take date in x+19000101 format and return yearmonthdate in int format
+def swapDate(date):
+    initialDate = datetime.datetime(1900,1,1)
+    currentTime = initialDate + datetime.timedelta(date)
+    return currentTime
+    
+# takes dateTime format and return int version
+# not that accurate?
+def to_integer(dt_time):
+    return 10000*dt_time.year + 100*dt_time.month + dt_time.day    
+    
+for i in provinceCaseData:
+    for j in i:
+        date = swapDate(j[7])
+        date = to_integer(date)
+        j[7] = copy.deepcopy(date)
+
+# sort provinceCaseData by dateReported
+for i in provinceCaseData:
+    for j in i:
+        sorted(j, key = lambda column: j[7])
+        
+for i in provinceTestingData:
+    for j in i:
+        date = swapDate(j[0])
+        date = to_integer(date)
+        j[0] = copy.deepcopy(date)
+        
+for i in provinceTestingData:
+    for j in i:
+        sorted(j, key = lambda column: j[0])
+        # print(j)
+        # print()
+
+# by province
+timeCaseDataX = [[] for i in provinceCase]
+timeCaseDataY = [[] for i in provinceCase]
+for i in provinceCaseData:
+    for j in i:
+        timeCaseDataX[provinceCase.index(j[5])].append(j[7])
+        timeCaseDataY[provinceCase.index(j[5])].append(float(j[1]))
+
+timeTestingDataX = [[] for i in provinceTesting]
+timeTestingDataY = [[] for i in provinceTesting]
+for i in provinceTestingData:
+    for j in i:
+        if j[2] != 'NA':
+            timeTestingDataX[provinceTesting.index(j[1])].append(j[0])            
+            timeTestingDataY[provinceTesting.index(j[1])].append(float(j[2]))
+        
+# calculate polynomial
+z = np.polyfit(timeCaseDataX[1], timeCaseDataY[1], 3)
+f = np.poly1d(z)
+
+# print(timeTestingDataX[1])
+# print(timeTestingDataY[1])
+z1 = np.polyfit(timeTestingDataX[1], timeTestingDataY[1], 3)
+f1 = np.poly1d(z1)
+# # calculate new x's and y's
+# x_new = np.linspace(timeCaseDataX[0][0], timeCaseDataX[0][-1], 50)
+# y_new = f(x_new)
+
+# plt.plot(timeCaseDataX[0],timeCaseDataX[0],'.')
+# # plt.xlim([timeCaseDataX[0][0]-1, timeCaseDataX[0][-1] + 1 ])
+# plt.show()
+
+print(provinceCase[1])
+print('date', timeCaseDataX[1][-1])
+print('infected', timeCaseDataY[1][-1])
+print("expected infected", f(20200419))
+print()
+
+print(provinceTesting[1])
+print('date', timeTestingDataX[1][-1])
+print('tested', timeTestingDataY[1][-1])
+print("expected tested", f1(20200317))
+# print(provinceCase)
+
+# 
