@@ -118,9 +118,9 @@ def to_integer(dt_time):
     year = dt_time.year
     month = dt_time.month
     day = dt_time.day
-    # if month == 4:
-    #     month = month-1
-    #     day = day+31
+    if month == 4:
+        month = month-1
+        day = day+31
     return 10000*year + 100*month + day    
     
 for i in provinceCaseData:
@@ -203,11 +203,11 @@ def infectionRate (province, date):
     if province in provinceCase and province in provinceTesting:
         index1 = provinceCase.index(province)
         index2 = provinceTesting.index(province)
-        
-        z = np.polyfit(timeCaseDataX[index1], timeCaseDataY[index1], 3)
+        degree = 3
+        z = np.polyfit(timeCaseDataX[index1], timeCaseDataY[index1], degree)
         f = np.poly1d(z)
         
-        z1 = np.polyfit(timeTestingDataX[index2], timeTestingDataY[index2], 3)
+        z1 = np.polyfit(timeTestingDataX[index2], timeTestingDataY[index2], degree)
         f1 = np.poly1d(z1)
 
         
@@ -234,4 +234,4 @@ def infectionRate (province, date):
         print(province, "not in Case or Testing database.")
         return -1
 
-print(infectionRate('BC', 20200419))
+print(infectionRate('BC', 20200350))
