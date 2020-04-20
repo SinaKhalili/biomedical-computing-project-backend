@@ -103,7 +103,7 @@ def sinaFunction (province):
     #     date2 = date22.split('-')
     #     dateDifference = date2[0] - date1[0]
     #     monthDifference = date2[1] - date1[1]
-    #     yearDifference = date2[2] - date1[2]
+    #     yearDifference = date2[2] - date1
     #     totalDifference = yearDifference*365+monthDifference*30+dateDifference
     #     print(totalDifference, date11, date22)
     #     return totalDifference
@@ -246,6 +246,4 @@ def sinaFunction (province):
     #     if i in provinceTesting:
     #         print(i)
     
-    
-# test call
 sinaFunction('BC')
