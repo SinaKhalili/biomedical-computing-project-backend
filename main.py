@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 import random
 
+from CoronaAnalysis import sinaFunction
+
 app = FastAPI()
 
 app.add_middleware(
@@ -27,9 +29,10 @@ def auth_user(response: Response, code: str = None):
     """
     return {"risk": random.randint(0,100)}
 
-@app.get("/analyze")
-def auth_user(response: Response, code: str = None):
+@app.get("/analyze/{location}")
+def auth_user(response: Response, location: str ='BC'):
     """
     Analyze based on a GET
     """
-    return {"risk": random.randint(0,100)}
+    risk = sinaFunction(location)
+    return {"risk": risk}
