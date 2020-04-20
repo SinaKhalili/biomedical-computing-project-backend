@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 def sinaFunction (province):
     # change this
-    file = open_workbook('D:\CJ\Academic\CMPT340\Project\Public_COVID-19_Canada.xlsx')
+    file = open_workbook('./data/Public_COVID-19_Canada.xlsx')
     # print(data)
     data = []
     for i in range(0,4):
