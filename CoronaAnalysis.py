@@ -10,9 +10,15 @@ from xlrd import *
 import numpy as np
 import copy
 import datetime
+import urllib.request
 import matplotlib.pyplot as plt
 
-file = open_workbook('D:\CJ\Academic\CMPT340\Project\Public_COVID-19_Canada.xlsx')
+downloadURL = "https://docs.google.com/spreadsheets/d/1D6okqtBS3S2NRC7GFVHzaZ67DuTw7LX49-fqSLwJyeo/export?format=xlsx"
+spreadsheetLocation = './data/Public_COVID-19_Canada.xlsx'
+
+urllib.request.urlretrieve(downloadURL, spreadsheetLocation)
+
+file = open_workbook(spreadsheetLocation)
 # print(data)
 data = []
 for i in range(0,4):
