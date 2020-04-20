@@ -121,7 +121,6 @@ def to_integer(dt_time):
     # if month == 4:
     #     month = month-1
     #     day = day+31
-        
     return 10000*year + 100*month + day    
     
 for i in provinceCaseData:
@@ -144,8 +143,6 @@ for i in provinceTestingData:
 for i in provinceTestingData:
     for j in i:
         sorted(j, key = lambda column: j[0])
-        # print(j)
-        # print()
 
 # by province
 timeCaseDataX = [[] for i in provinceCase]
@@ -162,42 +159,79 @@ for i in provinceTestingData:
         if j[2] != 'NA':
             timeTestingDataX[provinceTesting.index(j[1])].append(j[0])            
             timeTestingDataY[provinceTesting.index(j[1])].append(float(j[2]))
-        
-# calculate polynomial
-z = np.polyfit(timeCaseDataX[1], timeCaseDataY[1], 6)
-f = np.poly1d(z)
+                
+        # calculate polynomial
+        # z = np.polyfit(timeCaseDataX[1], timeCaseDataY[1], 6)
+        # f = np.poly1d(z)
 
-# print(timeTestingDataX[1])
-# print(timeTestingDataY[1])
-z1 = np.polyfit(timeTestingDataX[1], timeTestingDataY[1], 6)
-f1 = np.poly1d(z1)
-# # calculate new x's and y's
-# x_new = np.linspace(timeCaseDataX[0][0], timeCaseDataX[0][-1], 50)
-# y_new = f(x_new)
+        # print(timeTestingDataX[1])
+        # print(timeTestingDataY[1])
+        # z1 = np.polyfit(timeTestingDataX[1], timeTestingDataY[1], 6)
+        # f1 = np.poly1d(z1)
+        # # calculate new x's and y's
+        # x_new = np.linspace(timeCaseDataX[0][0], timeCaseDataX[0][-1], 50)
+        # y_new = f(x_new)
 
-# plt.plot(timeCaseDataX[0],timeCaseDataX[0],'.')
-# # plt.xlim([timeCaseDataX[0][0]-1, timeCaseDataX[0][-1] + 1 ])
-# plt.show()
+        # plt.plot(timeCaseDataX[0],timeCaseDataX[0],'.')
+        # # plt.xlim([timeCaseDataX[0][0]-1, timeCaseDataX[0][-1] + 1 ])
+        # plt.show()
 
-date = 20201030
-# date = 20200350
-print(provinceCase[1])
-print('date', timeCaseDataX[1][-1])
-print('infected', timeCaseDataY[1][-1])
-print("expected infected", f(date))
-print()
+        # date = 20201030
+        # # date = 20200350
+        # print(provinceCase[1])
+        # print('date', timeCaseDataX[1][-1])
+        # print('infected', timeCaseDataY[1][-1])
+        # print("expected infected", f(date))
+        # print()
 
-print(provinceTesting[1])
-print('date', timeTestingDataX[1][0])
-print('tested', timeTestingDataY[1][0])
-print("expected tested", f1(date))
+        # print(provinceTesting[1])
+        # print('date', timeTestingDataX[1][0])
+        # print('tested', timeTestingDataY[1][0])
+        # print("expected tested", f1(date))
 
 
-testingdiff = (f1(date)-timeTestingDataY[1][0])/timeTestingDataY[1][0]*100
-casediff = (f(date)-timeCaseDataY[1][-1])/timeCaseDataY[1][-1]*100
-print(testingdiff,casediff)
-print(f(date)/f1(date)*100)
-print(timeCaseDataY[1][-1]/timeTestingDataY[1][0]*100)
+        # testingdiff = (f1(date)-timeTestingDataY[1][0])/timeTestingDataY[1][0]*100
+        # casediff = (f(date)-timeCaseDataY[1][-1])/timeCaseDataY[1][-1]*100
+        # print(testingdiff,casediff)
+        # print(f(date)/f1(date)*100)
+        # print(timeCaseDataY[1][-1]/timeTestingDataY[1][0]*100)
 
 # dateSwap hack vs nonhack both have less than 5% deviance in accuracy at latest day
 # implement that if prediction is negative, return 0
+
+def infectionRate (province, date):
+    if province in provinceCase and province in provinceTesting:
+        index1 = provinceCase.index(province)
+        index2 = provinceTesting.index(province)
+        
+        z = np.polyfit(timeCaseDataX[index1], timeCaseDataY[index1], 3)
+        f = np.poly1d(z)
+        
+        z1 = np.polyfit(timeTestingDataX[index2], timeTestingDataY[index2], 3)
+        f1 = np.poly1d(z1)
+
+        
+        print("last case date:", timeCaseDataX[index1][-1])
+        print("last case #:", timeCaseDataY[index1][-1])
+        print()
+        print("last test date:", timeTestingDataX[index2][0])
+        print("last test #:", timeTestingDataY[index2][0])
+        print()
+        changedDate = date
+        print("province:", provinceCase[index1], provinceTesting[index2])
+        print(f(date), f1(changedDate))        
+
+        if f1(date) <= 0:
+            # iterate through past dates until testing rate is above 0
+            while f1(changedDate) < 0:
+                changedDate = changedDate-1
+        # truncate max % to 100%
+        if f(date)/f1(date)*100 > 100:
+            return 100
+        else:
+            return f(date)/f1(date)*100
+    else:
+        print(province, "not in Case or Testing database.")
+        return -1
+
+print(infectionRate('BC', 20200419))
