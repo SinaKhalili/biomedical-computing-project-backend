@@ -4,6 +4,7 @@ import os
 import random
 
 from CoronaAnalysis import sinaFunction
+from extra import get_daily_province_count
 
 app = FastAPI()
 
@@ -20,19 +21,11 @@ def auth_user(response: Response, code: str = None):
     """
     Analyze based on a GET
     """
-    return "Use the /analyze endpoint"
+    return "Use the /analyze endpoint \n Use /analyze/location/ for location"
 
-@app.post("/analyze")
-def auth_user(response: Response, code: str = None):
-    """
-    Analyze a user POST request
-    """
-    return {"risk": random.randint(0,100)}
-
-@app.get("/analyze/{location}")
+@app.get("/analyze/location/{location}")
 def auth_user(response: Response, location: str ='BC'):
     """
     Analyze based on a GET
     """
-    risk = sinaFunction(location)
-    return {"risk": risk}
+    return {"risk": get_daily_province_count()[location]}

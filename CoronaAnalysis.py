@@ -245,5 +245,25 @@ def sinaFunction (province):
     # for i in provinceCase:
     #     if i in provinceTesting:
     #         print(i)
-    
-sinaFunction('BC')
+def update_params():
+    provinces = [
+        "Ontario",
+        "BC",
+        "Quebec",
+        "Alberta",
+        "Saskatchewan",
+        "Manitoba",
+        "New Brunswick",
+        "PEI",
+        "NL",
+        "Nova Scotia",
+        "NWT",
+        "Yukon",
+    ]
+
+    nums = {}
+
+    for province in provinces:
+        nums[province] = sinaFunction(province)
+
+    print(nums)
