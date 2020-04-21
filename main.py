@@ -28,4 +28,6 @@ def auth_user(response: Response, location: str ='BC'):
     """
     Analyze based on a GET
     """
-    return {"risk": get_daily_province_count()[location]}
+    data = get_daily_province_count()
+    return {"risk": data[location]["risk"],
+            "num_infected" : data[location]["num_infected"]}

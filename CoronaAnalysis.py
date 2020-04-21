@@ -209,7 +209,7 @@ def sinaFunction (province):
             z = np.polyfit(timeCaseDataX[index1], timeCaseDataY[index1], degree)
             f = np.poly1d(z)
             
-            z1 = np.polyfit(timeTestingDataX[index2], timeTestingDataY[index2], degree)
+            z1 = np.polyfit(timeTestingDataX[index2], timeTestingDataY[index2], 1)
             f1 = np.poly1d(z1)
 
             
@@ -231,7 +231,7 @@ def sinaFunction (province):
             if f(date)/f1(date)*100 > 100:
                 return 100
             else:
-                return f(date)/f1(date)*100
+                return (f(date)/f1(date)*100, f(date))
         else:
             print(province, "not in Case or Testing database.")
             return -1
@@ -264,6 +264,7 @@ def update_params():
     nums = {}
 
     for province in provinces:
-        nums[province] = sinaFunction(province)
+        num, date = sinaFunction(province)
+        nums[province] = {"risk" : num, "num_infected":int(date)}
 
     print(nums)
